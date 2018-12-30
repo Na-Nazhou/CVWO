@@ -1,0 +1,36 @@
+<%= form_with model: @task, local: true do |form| %>
+
+    <% if @task.errors.any? %>
+        <div id="error_explanation">
+            <ul>
+                <% @task.errors.full_messages.each do |msg| %>
+                    <li class="alert alert-warning"><%= msg %></li>
+                <% end %>
+            </ul>
+        </div>
+    <% end %>
+
+    <p>
+        <%= form.label :title %><br>
+        <%= form.text_field :title %>
+    </p>
+
+    <p>
+        <%= form.label :description %><br>
+        <%= form.text_area :description %>
+    </p>
+
+    <p>
+        <%= form.label :deadline %><br>
+        <%= form.datetime_select :deadline %>
+    </p>
+
+    <p>
+        <%= form.label :tag %><br>
+        <%= form.text_field :tag %>
+    </p>
+
+    <p>
+        <%= form.submit%>
+    </p>
+<% end %>
