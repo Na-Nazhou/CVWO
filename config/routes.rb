@@ -10,6 +10,8 @@ Rails.application.routes.draw do
   get '/login', to: 'sessions#new'
   post '/login', to: 'sessions#create'
   delete '/logout', to: 'sessions#destroy'
+  patch '/users/:user_id/tasks/:id/complete', to: 'tasks#complete', as: 'user_task_complete'
+  patch '/users/:user_id/tasks/:id/uncomplete', to: 'tasks#uncomplete', as: 'user_task_uncomplete'
   resources :users do
     resources :tasks
   end

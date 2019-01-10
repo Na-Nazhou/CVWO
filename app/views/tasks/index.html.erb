@@ -1,3 +1,5 @@
+<% provide(:title, @user.name) %>
+<h1> My Tasks </h1>
 <%= link_to "Add New Task", new_user_task_path(@user) %>
 <br />
 <%= form_tag(user_tasks_path(@user), :method => "get", id: "search-form") do %>
@@ -10,33 +12,67 @@
 <% else if !@tasks.blank?%>
 <br />
 
+<h4> Ongoing tasks: </h4>
 <table class= "table table-hover">
     <tr>
         <th>Task</th>
         <th>Description</th>
         <th>Deadline</th>
         <th>Tag</th>
-        <th colspan="3"></th>
+        <th></th>
     </tr>
 
-    <% @tasks.each do |task| %>
+    <% @ongoing_tasks.each do |task| %>
         <tr>
             <td id="td1"><%= task.title %></td>
-            <td id="td2"><%= task.description %></td>
-            <td id="td3"><%= task.deadline %></td>
+            <td id="td2"><%= truncate task.description %></td>
+            <td id="td3"><%= task.deadline.to_s(:db) %></td>
             <td id="td4"><%= task.tag %></td>
-            <td class="td5"><%= link_to 'Edit', edit_user_task_path(user_id: task.user.id,
+            <td class="td5"><%= link_to 'Complete', user_task_complete_path(user_id: task.user.id,
+              id: task.id), method: :patch %> |
+            <%= link_to 'Show', user_task_path(user_id: task.user.id,
+              id: task.id) %> |
+            <%= link_to 'Edit', edit_user_task_path(user_id: task.user.id,
               id: task.id) %>
-              <span class="glyphicon glyphicon-edit"></span></td>
-            <td class="td5"><%= link_to 'Destroy', [task.user, task],
+              <span class="glyphicon glyphicon-edit"></span> |
+            <%= link_to 'Destroy', [task.user, task],
             method: :delete, data: { confirm: 'Are you sure?' } %>
-              <span class="glyphicon glyphicon-trash"></span></td>
+            <span class="glyphicon glyphicon-trash"></span>
+              </td>
         </tr>
     <% end %>
 <% else %>
 <% end %>
 </table>
-<% end %>
 
-<br>
-<%= link_to 'Back to the main page', user_tasks_path %>
+<h4>Completed tasks: </h4>
+<table class= "table table-hover">
+    <tr>
+        <th>Task</th>
+        <th>Description</th>
+        <th>Deadline</th>
+        <th>Tag</th>
+        <th colspan="4"></th>
+    </tr>
+
+    <% @completed_tasks.each do |task| %>
+        <tr>
+            <td id="td1"><%= task.title %></td>
+            <td id="td3"><%= task.deadline.to_s(:db) %></td>
+            <td id="td4"><%= task.tag %></td>
+            <td class="td5"><%= link_to 'Uncomplete', user_task_uncomplete_path(user_id: task.user.id,
+              id: task.id), method: :patch %> |
+            <%= link_to 'Show', user_task_path(user_id: task.user.id,
+              id: task.id) %> |
+            <%= link_to 'Edit', edit_user_task_path(user_id: task.user.id,
+              id: task.id) %>
+              <span class="glyphicon glyphicon-edit"></span> |
+            <%= link_to 'Destroy', [task.user, task],
+            method: :delete, data: { confirm: 'Are you sure?' } %>
+            <span class="glyphicon glyphicon-trash"></span>
+              </td>
+        </tr>
+    <% end %>
+</table>
+<% end %>
+<%= link_to 'View all tasks', user_tasks_path(@user) %>
