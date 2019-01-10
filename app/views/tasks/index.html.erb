@@ -1,11 +1,9 @@
-<h1>To-do List</h1>
-
-<%= link_to "Add New Task", new_task_path %>
+<%= link_to "Add New Task", new_user_task_path(@user) %>
 <br />
-<%= form_tag(tasks_path, :method => "get", id: "search-form") do %>
+<%= form_tag(user_tasks_path(@user), :method => "get", id: "search-form") do %>
 <br />
     <%= text_field_tag(:q, params[:q], placeholder: "Search by tag...") %>
-    <%= submit_tag("Search", :name => nil) %>
+    <%= submit_tag("Search") %>
 <% end %>
 <% if @tasks.blank? && !params[:q].nil? %>
     <h4 class="alert alert-warning">There are no tasks with the tag <%= params[:q] %>.</h4>
@@ -27,11 +25,10 @@
             <td id="td2"><%= task.description %></td>
             <td id="td3"><%= task.deadline %></td>
             <td id="td4"><%= task.tag %></td>
-            <td class="td5"><%= link_to 'Show', task_path(task) %>
-            <span class="glyphicon glyphicon-search"></span></td>
-            <td class="td5"><%= link_to 'Edit', edit_task_path(task) %>
+            <td class="td5"><%= link_to 'Edit', edit_user_task_path(user_id: task.user.id,
+              id: task.id) %>
               <span class="glyphicon glyphicon-edit"></span></td>
-            <td class="td5"><%= link_to 'Destroy', task_path(task),
+            <td class="td5"><%= link_to 'Destroy', [task.user, task],
             method: :delete, data: { confirm: 'Are you sure?' } %>
               <span class="glyphicon glyphicon-trash"></span></td>
         </tr>
@@ -42,4 +39,4 @@
 <% end %>
 
 <br>
-<%= link_to 'Back to the main page', tasks_path %>
+<%= link_to 'Back to the main page', user_tasks_path %>

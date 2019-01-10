@@ -1,45 +1,52 @@
 class TasksController < ApplicationController
   def index
-    @tasks = Task.all
+    @user = User.find(params[:user_id])
+    @tasks = @user.tasks
     if params[:q]
-      @tasks = Task.where(tag:params[:q])
+        @tasks = @user.tasks.where(tag: params[:q])
     end
   end
 
   def show
-    @task = Task.find(params[:id])
+    @user = User.find(params[:user_id])
+    @task = @user.tasks.find(params[:id])
   end
 
   def new
-    @task = Task.new
+    @user = User.find(params[:user_id])
+    @task = @user.tasks.build
   end
 
   def edit
-    @task = Task.find(params[:id])
+    @user = User.find(params[:user_id])
+    @task = @user.tasks.find(params[:id])
   end
 
   def create
-    @task = Task.new(task_params)
+    @user = User.find(params[:user_id])
+    @task = @user.tasks.create(task_params)
     if @task.save
-      redirect_to @task
+      redirect_to user_tasks_path(@user)
     else
       render 'new'
     end
   end
 
   def update
-    @task = Task.find(params[:id])
+    @user = User.find(params[:user_id])
+    @task = @user.tasks.find(params[:id])
     if @task.update(task_params)
-      redirect_to @task
+      redirect_to user_tasks_path(@user)
     else
       render 'edit'
     end
   end
 
   def destroy
-    @task = Task.find(params[:id])
+    @user = User.find(params[:user_id])
+    @task = @user.tasks.find(params[:id])
     @task.destroy
-    redirect_to tasks_path
+    redirect_to user_tasks_path(@user)
   end
 
   private
