@@ -25,10 +25,25 @@
     </p>
 
     <p>
-        <%= form.label :tag %><br>
-        <%= form.text_field :tag %>
-    </p>
+        <strong>Tag(s):</strong><br>
+        <div id="task_tags_tag_name">
+        <input id="task_tags_tag_name" type="text" name="task[tags][tag_name][]" ><br>
+        </div>
+        <input type ="button" id="new" value="Add New Tag" onclick="addTag()" />
+      </p>
 
+      <script>
+        function addTag(){
+  var br = document.createElement("br");
+  var ipt = document.createElement("input");
+  ipt.setAttribute("id","task_tags_tag_name");
+  ipt.setAttribute("type","text");
+  ipt.setAttribute("name","task[tags][tag_name][]");
+  var div = document.getElementById("task_tags_tag_name");
+  div.appendChild(ipt);
+  div.appendChild(br);
+}
+    </script>
     <p>
         <%= form.submit%>
     </p>

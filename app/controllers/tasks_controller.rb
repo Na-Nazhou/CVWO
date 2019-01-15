@@ -4,8 +4,9 @@ before_action :correct_user
   def index
     @user = User.find(params[:user_id])
     @tasks = @user.tasks.order(deadline: :desc).paginate(page: params[:page])
+    @tags = @user.tags
     if params[:q]
-        @tasks = @user.tasks.where(tag: params[:q])
+        @tag = @tags.where(tag_name: params[:q])
     end
     @ongoing_tasks = @tasks.where(completed: false)
     @completed_tasks = @tasks.where(completed: true)
@@ -19,16 +20,21 @@ before_action :correct_user
   def new
     @user = User.find(params[:user_id])
     @task = @user.tasks.build
+    @tag = @task.tags.build
   end
 
   def edit
     @user = User.find(params[:user_id])
     @task = @user.tasks.find(params[:id])
+    @tags = @task.tags
   end
 
   def create
     @user = User.find(params[:user_id])
     @task = @user.tasks.create(task_params)
+    params[:task][:tags][:tag_name].each do |tag_name|
+      @task.tags.create(tag_name: tag_name)
+    end
     if @task.save
       flash[:success] = "Task added!"
       redirect_to user_tasks_url
@@ -56,6 +62,9 @@ before_action :correct_user
   def update
     @user = User.find(params[:user_id])
     @task = @user.tasks.find(params[:id])
+    params[:task][:tags][:tag_name].each do |tag_name|
+      @task.tags.create(tag_name: tag_name)
+    end
     if @task.update(task_params)
       flash[:success] = "Task updated!"
       redirect_to user_tasks_url
@@ -74,7 +83,7 @@ before_action :correct_user
 
   private
     def task_params
-      params.require(:task).permit(:title, :description, :deadline, :tag)
+      params.require(:task).permit(:title, :description, :deadline)
     end
 
     # Confirms a logged_in user_

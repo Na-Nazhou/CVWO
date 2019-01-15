@@ -14,13 +14,16 @@
 
 <p>
     <strong>Deadline:</strong>
-    <%= @task.deadline %>
+    <%= @task.deadline.to_s(:db) %>
 </p>
 
 <p>
-    <strong>Tag:</strong>
-    <%= @task.tag %>
+    <strong>Tag(s):</strong>
+    <% @task.tags.each do |tag| %>
+      <%= tag.tag_name %>
+    <% end %>
 </p>
 
-<%= link_to 'Edit', edit_user_task_path(@task) %> |
+<%= link_to 'Edit', edit_user_task_path(user_id: @task.user.id,
+  id: @task.id) %> |
 <%= link_to 'Back', user_tasks_path(@user) %>

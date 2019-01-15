@@ -1,12 +1,12 @@
 <% provide(:title, @user.name) %>
 <h1> My Tasks </h1>
-<%= link_to "Add New Task", new_user_task_path(@user) %>
+<%= link_to "New Task", new_user_task_path(@user) %>
 <br />
-<%= form_tag(user_tasks_path(@user), :method => "get", id: "search-form") do %>
-<br />
+<%= form_tag(user_tasks_path(@user), method: "get") do %>
     <%= text_field_tag(:q, params[:q], placeholder: "Search by tag...") %>
     <%= submit_tag("Search") %>
 <% end %>
+
 <% if @tasks.blank? && !params[:q].nil? %>
     <h4 class="alert alert-warning">There are no tasks with the tag <%= params[:q] %>.</h4>
 <% else if !@tasks.blank?%>
@@ -16,18 +16,16 @@
 <table class= "table table-hover">
     <tr>
         <th>Task</th>
-        <th>Description</th>
         <th>Deadline</th>
-        <th>Tag</th>
+        <th>Tag(s)</th>
         <th></th>
     </tr>
 
     <% @ongoing_tasks.each do |task| %>
         <tr>
             <td id="td1"><%= task.title %></td>
-            <td id="td2"><%= truncate task.description %></td>
             <td id="td3"><%= task.deadline.to_s(:db) %></td>
-            <td id="td4"><%= task.tag %></td>
+            <td id="td4"><%= render task.tags %></td>
             <td class="td5"><%= link_to 'Complete', user_task_complete_path(user_id: task.user.id,
               id: task.id), method: :patch %> |
             <%= link_to 'Show', user_task_path(user_id: task.user.id,
@@ -49,17 +47,20 @@
 <table class= "table table-hover">
     <tr>
         <th>Task</th>
-        <th>Description</th>
         <th>Deadline</th>
-        <th>Tag</th>
-        <th colspan="4"></th>
+        <th>Tag(s)</th>
+        <th></th>
     </tr>
 
     <% @completed_tasks.each do |task| %>
         <tr>
             <td id="td1"><%= task.title %></td>
             <td id="td3"><%= task.deadline.to_s(:db) %></td>
-            <td id="td4"><%= task.tag %></td>
+            <td id="td4">
+              <% task.tags.each do |tag| %>
+              <%= tag.tag_name %><br>
+              <% end %>
+            </td>
             <td class="td5"><%= link_to 'Uncomplete', user_task_uncomplete_path(user_id: task.user.id,
               id: task.id), method: :patch %> |
             <%= link_to 'Show', user_task_path(user_id: task.user.id,
