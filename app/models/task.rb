@@ -1,5 +1,7 @@
 class Task < ApplicationRecord
   validates :title, presence: true
   belongs_to :user
-  has_and_belongs_to_many :tags
+  has_many :tags, dependent: :destroy
+  accepts_nested_attributes_for :tags, allow_destroy: true,
+    reject_if: lambda { |attributes| attributes['tag_name'].blank?}
 end

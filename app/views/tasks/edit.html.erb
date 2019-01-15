@@ -1,54 +1,56 @@
 <h1>Edit task</h1>
 <%= form_with model: @task, url: user_task_path([@task.user, @task]), local: true do |form| %>
-    <% if @task.errors.any? %>
-        <div id="error_explanation">
-            <ul>
-                <% @task.errors.full_messages.each do |msg| %>
-                    <li class="alert alert-warning"><%= msg %></li>
-                <% end %>
-            </ul>
-        </div>
-    <% end %>
-
-    <p>
-        <%= form.label :title %><br>
-        <%= form.text_field :title %>
-    </p>
-
-    <p>
-        <%= form.label :description %><br>
-        <%= form.text_area :description %>
-    </p>
-
-    <p>
-        <%= form.label :deadline %><br>
-        <%= form.datetime_select :deadline %>
-    </p>
-
-    <p>
-        <strong>Tag(s):</strong><br>
-        <div id="task_tags_tag_name">
-        <input id="task_tags_tag_name" type="text" name="task[tags][tag_name][]" ><br>
-        </div>
-        <input type ="button" id="new" value="Add New Tag" onclick="addTag()" />
-      </p>
-
-      <script>
-        function addTag(){
-  var br = document.createElement("br");
-  var ipt = document.createElement("input");
-  ipt.setAttribute("id","task_tags_tag_name");
-  ipt.setAttribute("type","text");
-  ipt.setAttribute("name","task[tags][tag_name][]");
-  var div = document.getElementById("task_tags_tag_name");
-  div.appendChild(ipt);
-  div.appendChild(br);
-}
-    </script>
-
-    <p>
-        <%= form.submit%>
-    </p>
+<% if @task.errors.any? %>
+    <div id="error_explanation">
+        <ul>
+            <% @task.errors.full_messages.each do |msg| %>
+                <li class="alert alert-warning"><%= msg %></li>
+            <% end %>
+        </ul>
+    </div>
 <% end %>
+
+<p>
+    <%= form.label :title %><br>
+    <%= form.text_field :title %>
+</p>
+
+<p>
+    <%= form.label :description %><br>
+    <%= form.text_area :description %>
+</p>
+
+<p>
+    <%= form.label :deadline %><br>
+    <%= form.datetime_select :deadline %>
+</p>
+
+<p>
+    <strong>Tag(s):</strong><br>
+      <%= form.fields_for :tags do |tags_form| %>
+        <%= tags_form.check_box :_destroy %>
+        <%= tags_form.text_field :tag_name %><br>
+      <% end %>
+  </p>
+  <div id = "task_tags_tag_name"></div>
+  <input type ="button" id="new" value="Add New Tag" onclick="addTag()" />
+
+  <script>
+    function addTag(){
+var br = document.createElement("br");
+var ipt = document.createElement("input");
+ipt.setAttribute("id","task_tags_tag_name");
+ipt.setAttribute("type","text");
+ipt.setAttribute("name","task[tags][]tag_name");
+var div = document.getElementById("task_tags_tag_name");
+div.appendChild(ipt);
+div.appendChild(br);
+}
+</script>
+<p>
+    <%= form.submit%>
+</p>
+<% end %>
+
 
 <%= link_to 'Back', user_tasks_path(@user) %>

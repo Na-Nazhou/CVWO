@@ -25,7 +25,11 @@
         <tr>
             <td id="td1"><%= task.title %></td>
             <td id="td3"><%= task.deadline.to_s(:db) %></td>
-            <td id="td4"><%= render task.tags %></td>
+            <td id="td4">
+              <% task.tags.each do |tag| %>
+              <%= tag.tag_name %><br>
+              <% end %>
+            </td>
             <td class="td5"><%= link_to 'Complete', user_task_complete_path(user_id: task.user.id,
               id: task.id), method: :patch %> |
             <%= link_to 'Show', user_task_path(user_id: task.user.id,

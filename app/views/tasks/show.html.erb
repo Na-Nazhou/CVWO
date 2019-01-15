@@ -19,9 +19,7 @@
 
 <p>
     <strong>Tag(s):</strong>
-    <% @task.tags.each do |tag| %>
-      <%= tag.tag_name %>
-    <% end %>
+    <%= render @task.tags %>
 </p>
 
 <%= link_to 'Edit', edit_user_task_path(user_id: @task.user.id,

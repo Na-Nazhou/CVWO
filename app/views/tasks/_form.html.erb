@@ -27,8 +27,13 @@
     <p>
         <strong>Tag(s):</strong><br>
         <div id="task_tags_tag_name">
-        <input id="task_tags_tag_name" type="text" name="task[tags][tag_name][]" ><br>
+          <%= form.fields_for :tags do |tags_form| %>
+          <%= tags_form.check_box :_destroy %>
+          <%= tags_form.text_field :tag_name %><br>
+          <% end %>
         </div>
+
+        <br>
         <input type ="button" id="new" value="Add New Tag" onclick="addTag()" />
       </p>
 
