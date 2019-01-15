@@ -26,29 +26,33 @@
 
     <p>
         <strong>Tag(s):</strong><br>
-        <div id="task_tags_tag_name">
           <%= form.fields_for :tags do |tags_form| %>
-          <%= tags_form.check_box :_destroy %>
-          <%= tags_form.text_field :tag_name %><br>
+            <%= tags_form.check_box :_destroy %>
+            <%= tags_form.text_field :tag_name %><br>
           <% end %>
-        </div>
 
-        <br>
-        <input type ="button" id="new" value="Add New Tag" onclick="addTag()" />
+      <div id = "task_tags_tag_name"></div>
       </p>
+      <input type ="button" id="new" value="Add New Tag" onclick="addTag()" />
 
       <script>
         function addTag(){
-  var br = document.createElement("br");
-  var ipt = document.createElement("input");
-  ipt.setAttribute("id","task_tags_tag_name");
-  ipt.setAttribute("type","text");
-  ipt.setAttribute("name","task[tags][tag_name][]");
-  var div = document.getElementById("task_tags_tag_name");
-  div.appendChild(ipt);
-  div.appendChild(br);
-}
+    var br = document.createElement("br");
+    var ipt1 = document.createElement("input");
+    ipt1.setAttribute("id","task_tags_tag_name");
+    ipt1.setAttribute("type","checkbox");
+    ipt1.setAttribute("name","task[tags_attributes][" + new Date().valueOf() + "][_destroy]");
+    var ipt2 = document.createElement("input");
+    ipt2.setAttribute("id","task_tags_tag_name");
+    ipt2.setAttribute("type","text");
+    ipt2.setAttribute("name","task[tags_attributes][" + new Date().valueOf() + "][tag_name]");
+    var div = document.getElementById("task_tags_tag_name");
+    div.appendChild(ipt1);
+    div.appendChild(ipt2);
+    div.appendChild(br);
+    }
     </script>
+
     <p>
         <%= form.submit%>
     </p>

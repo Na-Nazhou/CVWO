@@ -4,7 +4,7 @@ before_action :correct_user
   def index
     @user = User.find(params[:user_id])
     @tasks = @user.tasks.order(deadline: :desc)
-    if params[:q]
+    if !params[:q].blank?
       @tags = Tag.where("tag_name = ?", params[:q])
       @task_ids = []
       @tags.each do |tag|
@@ -36,11 +36,12 @@ before_action :correct_user
   def create
     @user = User.find(params[:user_id])
     @task = @user.tasks.new(task_params)
-    if params[:task][:tags][:tag_name]
-      params[:task][:tags][:tag_name].each do |tag_name|
-        @task.tags.build(task_id: @task.id, tag_name: tag_name)
-      end
-    end
+    #if params[:task][:tags]
+    #  params[:task][:tags].each do |tag|
+    #    @task.tags.build(task_id: @task.id, tag_name: tag[:tag_name],
+    #                    _destroy: tag[:_destroy])
+    #  end
+    #end
     if @task.save
       flash[:success] = "Task added!"
       redirect_to user_tasks_url
@@ -68,11 +69,12 @@ before_action :correct_user
   def update
     @user = User.find(params[:user_id])
     @task = @user.tasks.find(params[:id])
-    if params[:task][:tags][:tag_name]
-      params[:task][:tags][:tag_name].each do |tag_name|
-        @task.tags.build(task_id: @task.id, tag_name: tag_name)
-      end
-    end
+    #if params[:task][:tags]
+    #  params[:task][:tags].each do |tag|
+    #    @task.tags.build(task_id: @task.id, tag_name: tag[:tag_name],
+    #                    _destroy: tag[:_destroy])
+    #  end
+    #end
     if @task.update(task_params)
       flash[:success] = "Task updated!"
       redirect_to user_tasks_url

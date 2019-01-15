@@ -7,10 +7,10 @@
     <%= submit_tag("Search") %>
 <% end %>
 
-<% if @tasks.blank? && !params[:q].nil? %>
+<% if @tasks.nil? %>
     <h4 class="alert alert-warning">There are no tasks with the tag <%= params[:q] %>.</h4>
-<% else if !@tasks.blank?%>
-<br />
+<% else %>
+<br/>
 
 <h4> Ongoing tasks: </h4>
 <table class= "table table-hover">
@@ -43,8 +43,6 @@
               </td>
         </tr>
     <% end %>
-<% else %>
-<% end %>
 </table>
 
 <h4>Completed tasks: </h4>
@@ -80,4 +78,5 @@
     <% end %>
 </table>
 <% end %>
+
 <%= link_to 'View all tasks', user_tasks_path(@user) %>
