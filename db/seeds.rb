@@ -14,7 +14,7 @@ User.create!(name:  "Example User",
              activated: true,
              activated_at: Time.zone.now)
 
-99.times do |n|
+20.times do |n|
   name  = Faker::Name.name
   email = "example-#{n+1}@railstutorial.org"
   password = "password"
@@ -24,4 +24,12 @@ User.create!(name:  "Example User",
                password_confirmation: password,
                activated: true,
                activated_at: Time.zone.now)
+end
+
+users = User.all
+10.times do
+  title = Faker::Lorem.sentence(5)
+  deadline = Faker::Time.between(2.days.ago, Time.now)
+  users.each { |user| user.tasks.create!(title: title,
+              deadline: deadline) }
 end

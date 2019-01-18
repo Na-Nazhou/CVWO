@@ -24,7 +24,7 @@ before_action :correct_user
   def new
     @user = User.find(params[:user_id])
     @task = @user.tasks.build
-    2.times {@task.tags.build(task_id: @task.id)}
+    # 2.times {@task.tags.build(task_id: @task.id)}
   end
 
   def edit
