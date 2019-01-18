@@ -12,6 +12,8 @@ Rails.application.routes.draw do
   delete '/logout', to: 'sessions#destroy'
   patch '/users/:user_id/tasks/:id/complete', to: 'tasks#complete', as: 'user_task_complete'
   patch '/users/:user_id/tasks/:id/uncomplete', to: 'tasks#uncomplete', as: 'user_task_uncomplete'
+  #patch '/users/:user_id/tasks/sort_by_ddl', to: 'tasks#sort_by_ddl', as: 'user_task_ddl'
+  #patch '/users/:user_id/tasks/sort_by_tc', to: 'tasks#sort_by_tc', as: 'user_task_tc'
   resources :users do
     resources :tasks
   end

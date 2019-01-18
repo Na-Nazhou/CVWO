@@ -3,7 +3,7 @@ before_action :correct_user
 
   def index
     @user = User.find(params[:user_id])
-    @tasks = @user.tasks.order(deadline: :desc)
+    @tasks = @user.tasks.order(deadline: :asc)
     if !params[:q].blank?
       @tags = Tag.where("tag_name = ?", params[:q])
       @task_ids = []
