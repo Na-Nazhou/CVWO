@@ -1,4 +1,4 @@
-<%= form_with model: @task, url: user_tasks_path(@user), local: true do |form| %>
+<%= form_with model: @task, url: user_tasks_path(@user), class: "form-group", local: true do |form|%>
     <% if @task.errors.any? %>
         <div id="error_explanation">
             <ul>
@@ -11,24 +11,24 @@
 
     <p>
         <%= form.label :title %><br>
-        <%= form.text_field :title %>
+        <%= form.text_field :title, class: "form-control"%>
     </p>
 
     <p>
         <%= form.label :description %><br>
-        <%= form.text_area :description %>
+        <%= form.text_area :description, class: "form-control" %>
     </p>
 
     <p>
         <%= form.label :deadline %><br>
-        <%= form.datetime_select :deadline %>
+        <%= form.datetime_select :deadline, class: "form-control" %>
     </p>
 
     <p>
         <strong>Tag(s):</strong><br>
           <%= form.fields_for :tags do |tags_form| %>
             <%= tags_form.check_box :_destroy %>
-            <%= tags_form.text_field :tag_name %><br>
+            <%= tags_form.text_field :tag_name, class: "form-control" %><br>
           <% end %>
 
       <div id = "task_tags_tag_name"></div>
@@ -46,6 +46,7 @@
     ipt2.setAttribute("id","task_tags_tag_name");
     ipt2.setAttribute("type","text");
     ipt2.setAttribute("name","task[tags_attributes][" + new Date().valueOf() + "][tag_name]");
+    ipt2.setAttribute("class", "form-control");
     var div = document.getElementById("task_tags_tag_name");
     div.appendChild(ipt1);
     div.appendChild(ipt2);

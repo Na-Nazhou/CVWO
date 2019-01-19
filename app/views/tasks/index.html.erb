@@ -1,18 +1,36 @@
 <% provide(:title, @user.name) %>
 <h1> My Tasks </h1>
-<%= link_to "New Task", new_user_task_path(@user) %>
-<br />
+<br/>
+
 <%= form_tag(user_tasks_path(@user), method: "get") do %>
-    <%= text_field_tag(:q, params[:q], placeholder: "Search by tag...") %>
-    <%= submit_tag("Search") %>
+<div class="row">
+<div class="col-lg-3">
+<div class="input-group add-on">
+    <%= text_field_tag(:q, params[:q], placeholder: "Search by tag...", type: "search", class:"form-control", id: "searchinput" ) %>
+    <div class="input-group-btn">
+        <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+    </div>
+  </div>
+  </div>
+  </div>
 <% end %>
-<%= link_to 'by deadline', '#', class: 'btn btn-primary', id: 'sort_tasks_by_ddl' %>
+
+<%= link_to 'Sort by deadline', '#', id: 'sort_tasks_by_ddl' %>
+<br>
 <% if @tasks.nil? %>
     <h4 class="alert alert-warning">There are no tasks with the tag <%= params[:q] %>.</h4>
 <% else %>
 <br/>
 
-<h4> Ongoing tasks (<%= @ongoing_tasks.size %>): </h4>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapse1" >
+          Ongoing tasks: </a><span class="badge"><%= @ongoing_tasks.size %></span>
+      </h4>
+    </div>
+    <div id="collapse1" class="panel-collapse collapse in">
+      <div class="panel-body">
 <table class= "table table-hover">
   <thead>
     <tr>
@@ -30,57 +48,82 @@
             <td id="td3"><%= task.deadline.to_s(:db) %></td>
             <td id="td4">
               <% task.tags.each do |tag| %>
-              <%= tag.tag_name %><br>
+              <span class="badge badge-pill badge-dark"><%= tag.tag_name %></span><br>
               <% end %>
-            </td>
-            <td class="td5"><%= link_to 'Complete', user_task_complete_path(user_id: task.user.id,
-              id: task.id), method: :patch %> |
-            <%= link_to 'Show', user_task_path(user_id: task.user.id,
-              id: task.id) %> |
-            <%= link_to 'Edit', edit_user_task_path(user_id: task.user.id,
-              id: task.id) %>
-              <span class="glyphicon glyphicon-edit"></span> |
-            <%= link_to 'Destroy', [task.user, task],
-            method: :delete, data: { confirm: 'Are you sure?' } %>
-            <span class="glyphicon glyphicon-trash"></span>
+              <td class="td5"><%= link_to user_task_complete_path(user_id: task.user.id,
+                id: task.id), method: :patch do %>
+                <span class="glyphicon glyphicon-ok"></span>
+              <% end %>|
+              <%= link_to user_task_path(user_id: task.user.id,
+                id: task.id) do %>
+                <span class="glyphicon glyphicon-eye-open"></span>
+              <% end %> |
+              <%= link_to edit_user_task_path(user_id: task.user.id,
+                id: task.id) do %>
+                  <span class="glyphicon glyphicon-pencil"></span>
+              <% end %> |
+              <%= link_to [task.user, task], method: :delete, data: { confirm: 'Are you sure?' } do %>
+                <span class="glyphicon glyphicon-trash"></span>
+              <% end %>
               </td>
         </tr>
     <% end %>
   </tbody>
 </table>
+      </div>
+    </div>
+  </div>
 
-<h4>Completed tasks (<%= @completed_tasks.size %>): </h4>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
+          Completed tasks: </a><span class="badge"><%= @completed_tasks.size %></span>
+      </h4>
+    </div>
+    <div id="collapse2" class="panel-collapse collapse">
+      <div class="panel-body">
 <table class= "table table-hover">
+  <thead>
     <tr>
         <th>Task</th>
         <th>Deadline</th>
         <th>Tag(s)</th>
         <th></th>
     </tr>
+  </thead>
 
+  <tbody>
     <% @completed_tasks.each do |task| %>
         <tr>
             <td id="td1"><%= truncate task.title %></td>
             <td id="td3"><%= task.deadline.to_s(:db) %></td>
             <td id="td4">
               <% task.tags.each do |tag| %>
-              <%= tag.tag_name %><br>
+              <span class="badge badge-pill badge-dark"><%= tag.tag_name %></span><br>
               <% end %>
             </td>
-            <td class="td5"><%= link_to 'Uncomplete', user_task_uncomplete_path(user_id: task.user.id,
-              id: task.id), method: :patch %> |
-            <%= link_to 'Show', user_task_path(user_id: task.user.id,
-              id: task.id) %> |
-            <%= link_to 'Edit', edit_user_task_path(user_id: task.user.id,
-              id: task.id) %>
-              <span class="glyphicon glyphicon-edit"></span> |
-            <%= link_to 'Destroy', [task.user, task],
-            method: :delete, data: { confirm: 'Are you sure?' } %>
-            <span class="glyphicon glyphicon-trash"></span>
+            <td class="td5"><%= link_to user_task_uncomplete_path(user_id: task.user.id,
+              id: task.id), method: :patch do %>
+              <span class="glyphicon glyphicon-plus"></span>
+            <% end %>|
+            <%= link_to user_task_path(user_id: task.user.id,
+              id: task.id) do %>
+              <span class="glyphicon glyphicon-eye-open"></span>
+            <% end %> |
+            <%= link_to edit_user_task_path(user_id: task.user.id,
+              id: task.id) do %>
+                <span class="glyphicon glyphicon-pencil"></span>
+            <% end %> |
+            <%= link_to [task.user, task], method: :delete, data: { confirm: 'Are you sure?' } do %>
+              <span class="glyphicon glyphicon-trash"></span>
+            <% end %>
               </td>
         </tr>
     <% end %>
+  </tbody>
 </table>
+      </div>
+    </div>
+  </div>
 <% end %>
-
-<%= link_to 'View all tasks', user_tasks_path(@user) %>

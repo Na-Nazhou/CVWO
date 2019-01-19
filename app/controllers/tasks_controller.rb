@@ -3,14 +3,18 @@ before_action :correct_user
 
   def index
     @user = User.find(params[:user_id])
-    @tasks = @user.tasks.order(deadline: :asc)
+    @tasks = @user.tasks.order(created_at: :asc)
     if !params[:q].blank?
       @tags = Tag.where("tag_name = ?", params[:q])
-      @task_ids = []
-      @tags.each do |tag|
-        @task_ids.push(tag.task_id)
+      if @tags.empty?
+        flash[:warning] = "There are no tags with name " + params[:q] + ".";
+      else
+        @task_ids = []
+        @tags.each do |tag|
+          @task_ids.push(tag.task_id)
+        end
+        @tasks = @user.tasks.where(id: @task_ids).order(created_at: :desc)
       end
-      @tasks = @user.tasks.where(id: @task_ids).order(deadline: :desc)
     end
     @ongoing_tasks = @tasks.where(completed: false)
     @completed_tasks = @tasks.where(completed: true)

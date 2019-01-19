@@ -2,6 +2,12 @@
   <div class="container">
     <%= link_to "To-do App", root_path, id: "logo" %>
     <nav>
+      <ul class="nav navbar-nav navbar-left">
+      <% if logged_in? %>
+          <li><%= link_to "My tasks", current_user %></li>
+          <li><%= link_to "New task", new_user_task_path(current_user) %></li>
+      <% end %>
+      </ul>
       <ul class="nav navbar-nav navbar-right">
         <li><%= link_to "Home", root_path %></li>
         <li><%= link_to "Help", help_path %></li>
@@ -9,19 +15,8 @@
           <li><%= link_to "Users", users_path %></li>
         <% end %>
         <% if logged_in? %>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                Account <b class="caret"></b>
-              </a>
-              <ul class="dropdown-menu">
-                <li><%= link_to "Tasks", current_user %></li>
-                <li><%= link_to "Settings", edit_user_path(current_user) %></li>
-                <li class="divider"></li>
-                <li>
-                  <%= link_to "Log out", logout_path, method: :delete %>
-                </li>
-              </ul>
-            </li>
+            <li><%= link_to "Settings", edit_user_path(current_user) %></li>
+            <li><%= link_to "Log out", logout_path, method: :delete %></li>
         <% else %>
           <li><%= link_to "Log in", login_path %></li>
         <% end %>

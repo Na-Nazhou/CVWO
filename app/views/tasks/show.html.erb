@@ -1,11 +1,9 @@
+<div class="card">
+  <div class="container">
 <p>
     <strong>Task:</strong>
     <%= @task.title %>
 </p>
-
-<span class="timestamp" style="color:grey;">
-  Created <%= time_ago_in_words(@task.created_at) %> ago.
-</span>
 
 <p>
     <strong>Description:</strong>
@@ -25,3 +23,5 @@
 <%= link_to 'Edit', edit_user_task_path(user_id: @task.user.id,
   id: @task.id) %> |
 <%= link_to 'Back', user_tasks_path(@user) %>
+</div>
+</div>
