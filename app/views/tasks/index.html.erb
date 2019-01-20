@@ -2,6 +2,8 @@
 <h1> My Tasks </h1>
 <br/>
 
+<%= link_to "New task", new_user_task_path(@user) %>
+
 <%= form_tag(user_tasks_path(@user), method: "get") do %>
 <div class="row">
 <div class="col-lg-3">

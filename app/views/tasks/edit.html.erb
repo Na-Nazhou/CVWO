@@ -1,45 +1,42 @@
 <h1>Edit task</h1>
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
 <%= form_with model: @task, url: user_task_path([@task.user, @task]), local: true do |form| %>
 <% if @task.errors.any? %>
     <div id="error_explanation">
         <ul>
             <% @task.errors.full_messages.each do |msg| %>
-                <li class="alert alert-warning"><%= msg %></li>
+                <li class="alert alert-warning"><%= msg %><li>
             <% end %>
         </ul>
     </div>
 <% end %>
 
-<p>
     <%= form.label :title %><br>
-    <%= form.text_field :title %>
-</p>
+    <%= form.text_field :title, class: "form-control"%>
 
 <p>
     <%= form.label :description %><br>
-    <%= form.text_area :description %>
+    <%= form.text_area :description, class:"form-control", rows:"4", cols:"30" %>
 </p>
+
 
 <p>
     <%= form.label :deadline %><br>
-    <%= form.datetime_select :deadline %>
+    <%= form.datetime_select :deadline, class: "form-control" %>
 </p>
 
-<p>
     <strong>Tag(s):</strong><br>
-    <div id = "task_tags_tag_name">
       <%= form.fields_for :tags do |tags_form| %>
         <%= tags_form.check_box :_destroy %>
-        <%= tags_form.text_field :tag_name %><br>
-    <% end %>
-  </div>
-  <input type ="button" id="new" value="Add New Tag" onclick="addTag()" />
-</p>
+        <%= tags_form.text_field :tag_name, class: "form-control" %><br>
+      <% end %>
 
-<script>
-function addTag(){
+  <div id = "task_tags_tag_name"></div>
+  <input type ="button" id="new" value="Add New Tag" onclick="addTag()" />
+  <script>
+    function addTag(){
 var br = document.createElement("br");
-var sp = document.createTextNode (" ");
 var ipt1 = document.createElement("input");
 ipt1.setAttribute("id","task_tags_tag_name");
 ipt1.setAttribute("type","checkbox");
@@ -48,14 +45,14 @@ var ipt2 = document.createElement("input");
 ipt2.setAttribute("id","task_tags_tag_name");
 ipt2.setAttribute("type","text");
 ipt2.setAttribute("name","task[tags_attributes][" + new Date().valueOf() + "][tag_name]");
+ipt2.setAttribute("class", "form-control");
 var div = document.getElementById("task_tags_tag_name");
 div.appendChild(ipt1);
-// div.appenChild(sp);
 div.appendChild(ipt2);
-
 div.appendChild(br);
 }
 </script>
+
 <p>
     <%= form.submit%>
 </p>
@@ -63,3 +60,5 @@ div.appendChild(br);
 
 
 <%= link_to 'Back', user_tasks_path(@user) %>
+</div>
+</div>
