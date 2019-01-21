@@ -3,7 +3,7 @@
         <div id="error_explanation">
             <ul>
                 <% @task.errors.full_messages.each do |msg| %>
-                    <li class="alert alert-warning"><%= msg %><li>
+                    <li class="alert alert-warning"><%= msg %></li>
                 <% end %>
             </ul>
         </div>
@@ -29,24 +29,30 @@
             <%= tags_form.text_field :tag_name, class: "form-control" %><br>
           <% end %>
 
-      <div id = "task_tags_tag_name"></div>
-      <input type ="button" id="new" value="Add New Tag" onclick="addTag()" />
+      <div id = "task_tags_tag_name">
+        <input type ="button" id="new" value="Add New Tag" onclick="addTag()" />
+      </div>
+
       <script>
         function addTag(){
     var br = document.createElement("br");
-    var ipt1 = document.createElement("input");
-    ipt1.setAttribute("id","task_tags_tag_name");
-    ipt1.setAttribute("type","checkbox");
-    ipt1.setAttribute("name","task[tags_attributes][" + new Date().valueOf() + "][_destroy]");
     var ipt2 = document.createElement("input");
-    ipt2.setAttribute("id","task_tags_tag_name");
     ipt2.setAttribute("type","text");
     ipt2.setAttribute("name","task[tags_attributes][" + new Date().valueOf() + "][tag_name]");
-    ipt2.setAttribute("class", "form-control");
+    ipt2.setAttribute("class", "form-control task_tags_tag_name");
+    var ipt3 = document.createElement("input");
+    ipt3.setAttribute("class", "task_tags_tag_name");
+    ipt3.setAttribute("type", "button");
+    ipt3.setAttribute("name","task[tags_attributes][" + new Date().valueOf() + "][tag_name]");
+    ipt3.setAttribute("onclick", "removeTag(this)");
     var div = document.getElementById("task_tags_tag_name");
-    div.appendChild(ipt1);
     div.appendChild(ipt2);
-    div.appendChild(br);
+    div.appendChild(ipt3);
+    }
+
+    function removeTag(elem) {
+      $(elem).prev().remove();
+      $(elem).remove();
     }
     </script>
 
