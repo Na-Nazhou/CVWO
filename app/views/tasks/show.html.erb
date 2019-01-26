@@ -1,25 +1,6 @@
 <div class="card">
   <div class="container">
-<p>
-    <strong>Task:</strong>
-    <%= @task.title %>
-</p>
-
-<p>
-    <strong>Description:</strong>
-    <%= @task.description %>
-</p>
-
-<p>
-    <strong>Deadline:</strong>
-    <%= @task.deadline.to_s(:db) %>
-</p>
-
-<p>
-    <strong>Tag(s):</strong>
-    <%= render @task.tags %>
-</p>
-
+<%= render 'task' %>
 <%= link_to 'Edit', edit_user_task_path(user_id: @task.user.id,
   id: @task.id) %> |
 <%= link_to 'Back', user_tasks_path(@user) %>

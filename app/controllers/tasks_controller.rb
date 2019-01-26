@@ -3,9 +3,9 @@ before_action :correct_user
 
   def index
     @user = User.find(params[:user_id])
-    @tasks = @user.tasks.order(created_at: :asc)
+    @tasks = @user.tasks.order(created_at: :desc)
     if !params[:q].blank?
-      @tags = Tag.where("tag_name = ?", params[:q])
+      @tags = Tag.where(tag_name: params[:q])
       if @tags.empty?
         flash[:warning] = "There are no tags with name " + params[:q] + ".";
       else
@@ -28,13 +28,16 @@ before_action :correct_user
   def new
     @user = User.find(params[:user_id])
     @task = @user.tasks.build
-    # 2.times {@task.tags.build(task_id: @task.id)}
+    @task.tags.build(task_id: @task.id)
   end
 
   def edit
     @user = User.find(params[:user_id])
     @task = @user.tasks.find(params[:id])
     @tags = @task.tags
+    if @tags.empty?
+      @task.tags.build(task_id: @task.id)
+    end
   end
 
   def create
@@ -66,7 +69,7 @@ before_action :correct_user
     @user = User.find(params[:user_id])
     @task = @user.tasks.find(params[:id])
     @task.update(completed: false)
-    flash[:success] = "Task not completed!"
+    flash[:success] = "Add the task back to the ongoing tasks"
     redirect_to user_tasks_url
   end
 

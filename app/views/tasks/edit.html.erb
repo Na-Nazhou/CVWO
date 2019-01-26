@@ -1,70 +1,8 @@
 <h1>Edit task</h1>
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
-<%= form_with model: @task, url: user_task_path([@task.user, @task]), local: true do |form| %>
-<% if @task.errors.any? %>
-    <div id="error_explanation">
-        <ul>
-            <% @task.errors.full_messages.each do |msg| %>
-                <li class="alert alert-warning"><%= msg %></li>
-            <% end %>
-        </ul>
-    </div>
-<% end %>
-
-    <%= form.label :title %><br>
-    <%= form.text_field :title, class: "form-control"%>
-
-<p>
-    <%= form.label :description %><br>
-    <%= form.text_area :description, class:"form-control", rows:"4", cols:"30" %>
-</p>
-
-
-<p>
-    <%= form.label :deadline %><br>
-    <%= form.datetime_select :deadline, class: "form-control" %>
-</p>
-
-    <strong>Tag(s):</strong><br>
-      <%= form.fields_for :tags do |tags_form| %>
-        <%= tags_form.check_box :_destroy %>
-        <%= tags_form.text_field :tag_name, class: "form-control" %><br>
-      <% end %>
-
-      <div id = "task_tags_tag_name">
-        <input type ="button" id="new" value="Add New Tag" onclick="addTag()" />
-      </div>
-
-      <script>
-        function addTag(){
-      var br = document.createElement("br");
-      var ipt2 = document.createElement("input");
-      ipt2.setAttribute("type","text");
-      ipt2.setAttribute("name","task[tags_attributes][" + new Date().valueOf() + "][tag_name]");
-      ipt2.setAttribute("class", "form-control task_tags_tag_name");
-      var ipt3 = document.createElement("input");
-      ipt3.setAttribute("class", "task_tags_tag_name");
-      ipt3.setAttribute("type", "button");
-      ipt3.setAttribute("name","task[tags_attributes][" + new Date().valueOf() + "][tag_name]");
-      ipt3.setAttribute("onclick", "removeTag(this)");
-      var div = document.getElementById("task_tags_tag_name");
-      div.appendChild(ipt2);
-      div.appendChild(ipt3);
-      }
-
-      function removeTag(elem) {
-      $(elem).prev().remove();
-      $(elem).remove();
-      }
-      </script>
-      
-<p>
-    <%= form.submit%>
-</p>
-<% end %>
-
-
+<%= render partial: 'form', locals: {url_path: user_task_path([@task.user, @task]),
+  task: @task, method: 'patch'}%>
 <%= link_to 'Back', user_tasks_path(@user) %>
 </div>
 </div>

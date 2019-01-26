@@ -1,62 +1,102 @@
-<%= form_with model: @task, url: user_tasks_path(@user), class: "form-group row", local: true do |form|%>
-    <% if @task.errors.any? %>
-        <div id="error_explanation">
-            <ul>
-                <% @task.errors.full_messages.each do |msg| %>
-                    <li class="alert alert-warning"><%= msg %></li>
-                <% end %>
-            </ul>
-        </div>
-    <% end %>
-
-        <%= form.label :title %><br>
-        <%= form.text_field :title, class: "form-control"%>
+<%= form_for task, url: url_path, method: method, local: true do |form|%>
+<%= render partial: 'shared/error_messages', locals: {attr: task} %>
+  <p>
+      <%= form.label :title %><br>
+      <%= form.text_field :title, class: "form-control"%>
 
     <p>
         <%= form.label :description %><br>
         <%= form.text_area :description, class:"form-control", rows:"4", cols:"30" %>
     </p>
 
-
     <p>
         <%= form.label :deadline %><br>
         <%= form.datetime_select :deadline, class: "form-control" %>
     </p>
 
-        <strong>Tag(s):</strong><br>
-          <%= form.fields_for :tags do |tags_form| %>
-            <%= tags_form.check_box :_destroy %>
-            <%= tags_form.text_field :tag_name, class: "form-control" %><br>
-          <% end %>
+    <strong>Tag(s):</strong>
+    <button type="button" class="btn btn-default" onclick="addTag()">
+      <i class="glyphicon glyphicon-plus"></i>
+    </button>
+    <div id="task_tags_tag_name">
+      <%= form.fields_for :tags do |tags_form| %>
+        <div class="input-group">
+          <%= tags_form.text_field :tag_name, class: "form-control"%>
+          <div class = "input-group-btn">
+            <button type="button" class="btn btn-default" onclick="removeTag(this)">
+              <i class="glyphicon glyphicon-remove"></i>
+            </button>
+          </div>
+          <%= tags_form.hidden_field :_destroy, value: 0 %>
+        </div>
+      <% end %>
+    </div>
 
-      <div id = "task_tags_tag_name">
-        <input type ="button" id="new" value="Add New Tag" onclick="addTag()" />
-      </div>
 
       <script>
+
         function addTag(){
-    var br = document.createElement("br");
-    var ipt2 = document.createElement("input");
-    ipt2.setAttribute("type","text");
-    ipt2.setAttribute("name","task[tags_attributes][" + new Date().valueOf() + "][tag_name]");
-    ipt2.setAttribute("class", "form-control task_tags_tag_name");
-    var ipt3 = document.createElement("input");
-    ipt3.setAttribute("class", "task_tags_tag_name");
-    ipt3.setAttribute("type", "button");
-    ipt3.setAttribute("name","task[tags_attributes][" + new Date().valueOf() + "][tag_name]");
-    ipt3.setAttribute("onclick", "removeTag(this)");
-    var div = document.getElementById("task_tags_tag_name");
-    div.appendChild(ipt2);
-    div.appendChild(ipt3);
+          // <div id="task_tags_tag_name">
+          //   <%#= form.fields_for :tags do |tags_form| %>
+          //     <div class="input-group">
+                 <%#= tags_form.text_field :tag_name, class: "form-control"%>
+          //       <div class = "input-group-btn">
+          //         <button type="button" class="btn btn-default" onclick="removeTag(this)">
+          //           <i class="glyphicon glyphicon-remove"></i>
+          //         </button>
+          //       </div>
+          //       <%#= tags_form.hidden_field :_destroy, value: 0 %>
+          //     </div>
+          //   <%# end %>
+          // </div>
+    var tags_div = document.getElementById("task_tags_tag_name");
+
+    var input_group = document.createElement("div");
+    input_group.setAttribute("class", "input-group");
+
+    var num = new Date().valueOf();
+    var tag_name = document.createElement("input");
+    tag_name.setAttribute("class", "form-control");
+    tag_name.setAttribute("type", "text");
+    tag_name.setAttribute("id", "task_tags_attributes+" + num + "_tag_name");
+    tag_name.setAttribute("name", "task[tags_attributes][" + num + "][tag_name]");
+
+    var input_group_btn = document.createElement("div");
+    input_group_btn.setAttribute("class", "input-group-btn");
+
+    var btn = document.createElement("button");
+    btn.setAttribute("class", "btn btn-default");
+    btn.setAttribute("type", "button");
+    btn.setAttribute("onclick", "removeTag(this)");
+
+    var icon = document.createElement("i");
+    icon.setAttribute("class", "glyphicon glyphicon-remove");
+
+    btn.appendChild(icon);
+    input_group_btn.appendChild(btn);
+    input_group.appendChild(tag_name);
+    input_group.appendChild(input_group_btn);
+    tags_div.appendChild(input_group);
+
+    // var $div = $('div[class="input-group"]:last');
+    // var num = "" + new Date().valueOf();
+    // var $new = $div.clone();
+    // $div.after($new);
+    // var $input = $('input[class="form-control"]:last');
+    // $input.val("");
+    // $input.attr("id", "task_tags_attributes_" + num + "_tag_name" );
+    // // $input.removeAttr("id");
+    // $input.attr("name", "task[tags_attributes][" + num + "][tag_name]");
+
     }
 
     function removeTag(elem) {
-      $(elem).prev().remove();
-      $(elem).remove();
+      $(elem).closest(".input-group").find("input[type='hidden']").val('1');
+      $(elem).closest('.input-group').hide();
     }
     </script>
-
     <p>
         <%= form.submit%>
     </p>
+
 <% end %>
