@@ -50,7 +50,8 @@
     <% @ongoing_tasks.each do |task| %>
         <tr>
             <td id="td1"><%= truncate task.title %></td>
-            <td id="td3"><%= task.deadline.to_s(:db) %></td>
+            <td id="td3">
+              <%= task.deadline.to_s(:db) if task.deadline.present?%></td>
             <td id="td4">
               <% task.tags.each do |tag| %>
                 <%= link_to user_tasks_path(id: task.user.id, :q => tag.tag_name) do %>
@@ -104,7 +105,7 @@
     <% @completed_tasks.each do |task| %>
         <tr>
             <td id="td1"><%= truncate task.title %></td>
-            <td id="td3"><%= task.deadline.to_s(:db) %></td>
+            <td id="td3"><%= task.deadline.to_s(:db) if task.deadline.present? %></td>
             <td id="td4">
               <% task.tags.each do |tag| %>
               <span class="badge badge-pill badge-dark"><%= tag.tag_name %></span><br>

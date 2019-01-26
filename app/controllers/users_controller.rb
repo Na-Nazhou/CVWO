@@ -27,7 +27,8 @@ class UsersController < ApplicationController
       # flash[:success] = "Welcome to the Sample App!"
       # redirect_to @user
       @user.send_activation_email
-      flash[:info] = "Please check your email to activate your account. "
+      flash[:info] = "Please check your email to activate your account.
+      You may need to wait for a few minutes to receive the email. Thanks for your patience."
       redirect_to root_url
     else
       render 'new'

@@ -11,7 +11,8 @@
 
     <p>
         <%= form.label :deadline %><br>
-        <%= form.datetime_select :deadline, class: "form-control" %>
+        <%= form.datetime_select :deadline, class: "form-control",
+          include_blank: true, start_year: Time.now.year, end_year: Time.now.year + 10%>
     </p>
 
     <strong>Tag(s):</strong>

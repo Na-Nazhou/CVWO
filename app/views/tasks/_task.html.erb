@@ -10,7 +10,7 @@
 
 <p>
     <strong>Deadline:</strong>
-    <%= @task.deadline.to_s(:db) %>
+    <%= @task.deadline.to_s(:db) if @task.deadline.present? %>
 </p>
 
 <p>

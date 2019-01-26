@@ -28,7 +28,6 @@ before_action :correct_user
   def new
     @user = User.find(params[:user_id])
     @task = @user.tasks.build
-    @task.tags.build(task_id: @task.id)
   end
 
   def edit
@@ -49,7 +48,9 @@ before_action :correct_user
     #                    _destroy: tag[:_destroy])
     #  end
     #end
-    if @task.save
+    if helpers.has_duplicate_tag_names?
+      render 'new'
+    elsif @task.save
       flash[:success] = "Task added!"
       redirect_to user_tasks_url
     else
@@ -82,7 +83,9 @@ before_action :correct_user
     #                    _destroy: tag[:_destroy])
     #  end
     #end
-    if @task.update(task_params)
+    if helpers.has_duplicate_tag_names?
+      render 'edit'
+    elsif @task.update(task_params)
       flash[:success] = "Task updated!"
       redirect_to user_tasks_url
     else
