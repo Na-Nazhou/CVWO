@@ -2,7 +2,10 @@
 <h1> My Tasks </h1>
 <br/>
 
-<%= link_to "New task", new_user_task_path(@user) %>
+<%= link_to new_user_task_path(@user) do %>
+    <span class="glyphicon glyphicon-plus"></span>
+    New task
+<% end %>
 
 <%= form_tag(user_tasks_path(@user), method: "get") do %>
 <div class="row">
@@ -20,7 +23,10 @@
   </div>
 <% end %>
 
-<%= link_to 'Sort by deadline', '#', id: 'sort_tasks_by_ddl' %>
+<%= link_to '#', id: 'sort_tasks_by_ddl' do %>
+    <span class="glyphicon glyphicon-sort"></span>
+    Sort by deadline
+<% end %>
 <br>
 <% if @tasks.nil? %>
     <h4 class="alert alert-warning">There are no tasks with the tag <%= params[:q] %>.</h4>

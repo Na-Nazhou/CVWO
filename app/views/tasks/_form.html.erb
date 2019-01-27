@@ -1,7 +1,7 @@
 <%= form_for task, url: url_path, method: method, local: true do |form|%>
 <%= render partial: 'shared/error_messages', locals: {attr: task} %>
   <p>
-      <%= form.label :title %><br>
+      <%= form.label :title, 'Title*' %><br>
       <%= form.text_field :title, class: "form-control"%>
 
     <p>
@@ -16,7 +16,7 @@
     </p>
 
     <strong>Tag(s):</strong>
-    <button type="button" class="btn btn-default" onclick="addTag()">
+    <button type="button" class="btn btn-primary btn-sm" onclick="addTag()">
       <i class="glyphicon glyphicon-plus"></i>
     </button>
     <div id="task_tags_tag_name">
@@ -25,13 +25,14 @@
           <%= tags_form.text_field :tag_name, class: "form-control"%>
           <div class = "input-group-btn">
             <button type="button" class="btn btn-default" onclick="removeTag(this)">
-              <i class="glyphicon glyphicon-remove"></i>
+              <i class="glyphicon glyphicon-minus"></i>
             </button>
           </div>
           <%= tags_form.hidden_field :_destroy, value: 0 %>
         </div>
       <% end %>
     </div>
+    </br>
 
 
       <script>
@@ -71,7 +72,7 @@
     btn.setAttribute("onclick", "removeTag(this)");
 
     var icon = document.createElement("i");
-    icon.setAttribute("class", "glyphicon glyphicon-remove");
+    icon.setAttribute("class", "glyphicon glyphicon-minus");
 
     btn.appendChild(icon);
     input_group_btn.appendChild(btn);
@@ -97,7 +98,7 @@
     }
     </script>
     <p>
-        <%= form.submit%>
+        <%= form.submit yield(:button_text), class: "btn btn-primary form-control" %>
     </p>
 
 <% end %>
