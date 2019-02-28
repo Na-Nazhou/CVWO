@@ -114,7 +114,9 @@
             <td id="td3"><%= task.deadline.strftime("%Y-%m-%d, %H:%M") if task.deadline.present? %></td>
             <td id="td4">
               <% task.tags.each do |tag| %>
-              <span class="badge badge-pill badge-dark"><%= tag.tag_name %></span><br>
+              <%= link_to user_tasks_path(id: task.user.id, :q => tag.tag_name) do %>
+                  <span class="badge badge-pill badge-dark"><%= tag.tag_name %></span><br>
+	      <% end %>
               <% end %>
             </td>
             <td class="td5"><%= link_to user_task_uncomplete_path(user_id: task.user.id,
