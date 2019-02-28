@@ -10,7 +10,7 @@
 
 <p>
     <strong>Deadline:</strong>
-    <%= @task.deadline.strftime("%a, %d %b %Y, %H:%M") if @task.deadline.present? %>
+    <%= @task.deadline.strftime("%Y-%m-%d, %H:%M") if @task.deadline.present? %>
 </p>
 
 <p>
